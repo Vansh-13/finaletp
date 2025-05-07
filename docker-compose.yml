@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    container_name: final1
+    ports:
+      - "8090:80"
+    restart: always
+    networks:
+      - final
+
+networks:
+  final:
+    driver: bridge
