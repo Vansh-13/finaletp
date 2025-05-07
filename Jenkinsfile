@@ -8,32 +8,31 @@ pipeline {
     }
 
     stages {
-        stage('clone Code') {
+        stage('Clone Code') {
             steps {
-                 
-                git "$GIT"
+                git branch: 'main', url: "$GIT"
             }
         }
 
-        stage('build Docker Image') {
+        stage('Build Docker Image') {
             steps {
                 bat "docker build -t %IMAGE% ."
             }
         }
 
-        stage('Run docker container') {
+        stage('Run Docker Container') {
             steps {
                 bat '''
-                docker stop %CONTAINER%
-                docker rm %CONTAINER%
+                docker stop %CONTAINER% || echo Container not running
+                docker rm %CONTAINER% || echo Container not existing
                 docker run -d --name %CONTAINER% -p 8080:80 %IMAGE%
                 '''
             }
         }
 
-        stage('done') {
+        stage('Done') {
             steps {
-                echo ' Build & Deploy Done!'
+                echo 'Build & Deploy Done!'
             }
         }
     }
