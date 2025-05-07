@@ -2,35 +2,35 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'vansh967/finaletp'
-        CONTAINER_NAME = 'final1'
-        GIT_REP = 'https://github.com/Vansh-13/finaletp.git'
+        IMAGE = 'vansh967/finaletp'
+        CONTAINER = 'final1'
+        GIT = 'https://github.com/Vansh-13/finaletp.git'
     }
 
     stages {
-        stage('Clone Code') {
+        stage('clone Code') {
             steps {
-                git "$GIT_REP"
+                git "$GIT"
             }
         }
 
-        stage('Build Docker Image') {
+        stage('build Docker Image') {
             steps {
-                bat "docker build -t %IMAGE_NAME% ."
+                bat "docker build -t %IMAGE% ."
             }
         }
 
         stage('Run docker container') {
             steps {
                 bat '''
-                docker stop %CONTAINER_NAME%
-                docker rm %CONTAINER_NAME%
-                docker run -d --name %CONTAINER_NAME% -p 8080:80 %IMAGE_NAME%
+                docker stop %CONTAINER%
+                docker rm %CONTAINER%
+                docker run -d --name %CONTAINER% -p 8080:80 %IMAGE%
                 '''
             }
         }
 
-        stage('Done') {
+        stage('done') {
             steps {
                 echo ' Build & Deploy Done!'
             }
